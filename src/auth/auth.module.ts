@@ -6,16 +6,25 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 
+const JWT_SECRET = process.env.JWT_SECRET || 'secretKey';
+
 @Module({
   imports: [
     UsersModule,
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'secretKey',
+      secret: JWT_SECRET,
       signOptions: { expiresIn: '1d' },
     }),
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    {
+      provide: 'JWT_SECRET',
+      useValue: JWT_SECRET,
+    },
+  ],
   controllers: [AuthController],
   exports: [AuthService],
 })
