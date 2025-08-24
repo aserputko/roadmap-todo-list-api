@@ -1,0 +1,19 @@
+meta {
+  name: Fetch TODOs
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{API_URL}}/todos
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}
+
+settings {
+  encodeUrl: true
+}

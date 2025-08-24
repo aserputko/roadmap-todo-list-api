@@ -1,0 +1,26 @@
+meta {
+  name: Create TODO
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{API_URL}}/todos
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}
+
+body:json {
+  {
+    "title": "Task #2",
+    "description": "TBD"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

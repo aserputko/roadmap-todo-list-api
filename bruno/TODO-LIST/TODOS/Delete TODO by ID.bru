@@ -1,0 +1,19 @@
+meta {
+  name: Delete TODO by ID
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{API_URL}}/todos/2
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}
+
+settings {
+  encodeUrl: true
+}

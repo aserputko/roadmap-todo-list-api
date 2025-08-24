@@ -53,6 +53,18 @@ export class TodosController {
     return this.todosService.findAll(req.user, Number(page), Number(limit));
   }
 
+  @Get(':id')
+  @ApiOperation({ summary: 'Get a todo by ID' })
+  @ApiParam({ name: 'id', description: 'Todo ID', example: 1 })
+  @ApiResponse({ status: 200, description: 'Todo retrieved successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden' })
+  @ApiResponse({ status: 404, description: 'Todo not found' })
+  async findOne(@Param('id') id: number, @Request() req) {
+    const todo = await this.todosService.findOne(Number(id), req.user);
+    return { id: todo.id, title: todo.title, description: todo.description };
+  }
+
   @Put(':id')
   @ApiOperation({ summary: 'Update a todo' })
   @ApiParam({ name: 'id', description: 'Todo ID', example: 1 })

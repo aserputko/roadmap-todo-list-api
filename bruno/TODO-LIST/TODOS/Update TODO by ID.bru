@@ -1,0 +1,26 @@
+meta {
+  name: Update TODO by ID
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{API_URL}}/todos/2
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}
+
+body:json {
+  {
+    "title": "Task #2",
+    "description": "....."
+  }
+}
+
+settings {
+  encodeUrl: true
+}

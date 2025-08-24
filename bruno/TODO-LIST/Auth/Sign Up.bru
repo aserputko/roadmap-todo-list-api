@@ -1,0 +1,23 @@
+meta {
+  name: Sign Up
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{API_URL}}/register
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Andrii Serputko",
+    "email": "{{USER_EMAIL}}",
+    "password": "{{USER_PASSWORD}}"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
