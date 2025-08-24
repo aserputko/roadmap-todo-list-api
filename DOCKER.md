@@ -70,18 +70,18 @@ docker-compose logs -f app
 
 ## Environment Variables
 
-| Variable         | Description                             | Default    | Required |
-| ---------------- | --------------------------------------- | ---------- | -------- |
-| `DB_HOST`        | Database host address                   | -          | Yes      |
-| `DB_PORT`        | Database port                           | 5432       | No       |
-| `DB_USERNAME`    | Database username                       | -          | Yes      |
-| `DB_PASSWORD`    | Database password                       | -          | Yes      |
-| `DB_DATABASE`    | Database name                           | -          | Yes      |
-| `DB_TYPE`        | Database type (postgres, mysql, sqlite) | postgres   | No       |
-| `PORT`           | Application port                        | 3000       | No       |
-| `NODE_ENV`       | Environment mode                        | production | No       |
-| `JWT_SECRET`     | JWT signing secret                      | -          | Yes      |
-| `JWT_EXPIRES_IN` | JWT expiration time                     | 24h        | No       |
+| Variable            | Description                             | Default    | Required |
+| ------------------- | --------------------------------------- | ---------- | -------- |
+| `DATABASE_HOST`     | Database host address                   | -          | Yes      |
+| `DATABASE_PORT`     | Database port                           | 5432       | No       |
+| `DATABASE_USERNAME` | Database username                       | -          | Yes      |
+| `DATABASE_PASSWORD` | Database password                       | -          | Yes      |
+| `DATABASE_NAME`     | Database name                           | -          | Yes      |
+| `DATABASE_TYPE`     | Database type (postgres, mysql, sqlite) | postgres   | No       |
+| `PORT`              | Application port                        | 3000       | No       |
+| `NODE_ENV`          | Environment mode                        | production | No       |
+| `JWT_SECRET`        | JWT signing secret                      | -          | Yes      |
+| `JWT_EXPIRES_IN`    | JWT expiration time                     | 24h        | No       |
 
 ## Health Check
 
