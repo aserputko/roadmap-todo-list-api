@@ -4,8 +4,8 @@ meta {
   seq: 4
 }
 
-put {
-  url: {{API_URL}}/todos/2
+patch {
+  url: {{API_URL}}/todos/3
   body: json
   auth: bearer
 }
@@ -16,7 +16,7 @@ auth:bearer {
 
 body:json {
   {
-    "title": "Task #2",
+    "title": "Task #2222",
     "description": "....."
   }
 }

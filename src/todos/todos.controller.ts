@@ -5,8 +5,8 @@ import {
   Get,
   HttpCode,
   Param,
+  Patch,
   Post,
-  Put,
   Query,
   Request,
   UseGuards,
@@ -65,8 +65,8 @@ export class TodosController {
     return { id: todo.id, title: todo.title, description: todo.description };
   }
 
-  @Put(':id')
-  @ApiOperation({ summary: 'Update a todo' })
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update a todo partially' })
   @ApiParam({ name: 'id', description: 'Todo ID', example: 1 })
   @ApiBody({ type: UpdateTodoDto })
   @ApiResponse({ status: 200, description: 'Todo updated successfully' })
