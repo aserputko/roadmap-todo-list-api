@@ -6,12 +6,24 @@
 set -e  # Exit on any error
 
 # Configuration
-IMAGE_NAME="todo-list-api"
+IMAGE_ORGANIZATION="aserputko"
+IMAGE_NAME="roadmap-todo-list-api"
 IMAGE_TAG="${1:-latest}"
-DOCKERFILE_PATH="../Dockerfile"
+
+# Dynamically determine Dockerfile path based on current directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ "$PWD" == "$SCRIPT_DIR" ]]; then
+    # Running from scripts folder
+    DOCKERFILE_PATH="../Dockerfile"
+    BUILD_CONTEXT="../"
+else
+    # Running from root folder
+    DOCKERFILE_PATH="./Dockerfile"
+    BUILD_CONTEXT="./"
+fi
 
 echo "🐳 Building Todo List API Docker Image..."
-echo "Image: ${IMAGE_NAME}:${IMAGE_TAG}"
+echo "Image: ${IMAGE_ORGANIZATION}/${IMAGE_NAME}:${IMAGE_TAG}"
 echo "Dockerfile: ${DOCKERFILE_PATH}"
 echo ""
 
@@ -26,30 +38,15 @@ fi
 echo "🔨 Building image..."
 docker build \
     -f "$DOCKERFILE_PATH" \
-    -t "${IMAGE_NAME}:${IMAGE_TAG}" \
-    -t "${IMAGE_NAME}:latest" \
-    ../
+    -t "${IMAGE_ORGANIZATION}/${IMAGE_NAME}:${IMAGE_TAG}" \
+    -t "${IMAGE_ORGANIZATION}/${IMAGE_NAME}:latest" \
+    "$BUILD_CONTEXT"
 
 # Check build result
 if [ $? -eq 0 ]; then
     echo ""
-    echo "✅ Successfully built ${IMAGE_NAME}:${IMAGE_TAG}"
+    echo "✅ Successfully built ${IMAGE_ORGANIZATION}/${IMAGE_NAME}:${IMAGE_TAG}"
     echo ""
-    echo "📋 Available images:"
-    docker images | grep "$IMAGE_NAME"
-    echo ""
-    echo "🚀 To run the container, use:"
-    echo "   ./scripts/container-run.sh"
-    echo ""
-    echo "💡 Or manually with:"
-    echo "   docker run -d --name todo-list-api -p 3000:3000 \\"
-    echo "     -e DATABASE_HOST=localhost \\"
-    echo "     -e DATABASE_PORT=5432 \\"
-    echo "     -e DATABASE_USERNAME=postgres \\"
-    echo "     -e DATABASE_PASSWORD=password \\"
-    echo "     -e DATABASE_NAME=todo_list_db \\"
-    echo "     -e JWT_SECRET=your-jwt-secret \\"
-    echo "     ${IMAGE_NAME}:${IMAGE_TAG}"
 else
     echo "❌ Build failed!"
     exit 1
