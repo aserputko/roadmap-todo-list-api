@@ -5,31 +5,22 @@
 
 set -e  # Exit on any error
 
+# Source environment variables
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ -f "$SCRIPT_DIR/../.env" ]]; then
+    source "$SCRIPT_DIR/../.env"
+else
+    echo "❌ Error: docker.env file not found!"
+    echo "Please create docker.env file based on docker.env.example"
+    exit 1
+fi
+
 # Configuration
-IMAGE_ORGANIZATION="aserputko"
-IMAGE_NAME="roadmap-todo-list-api"
-IMAGE_TAG="${1:-latest}"
-CONTAINER_NAME="roadmap-todo-list-api"
+CONTAINER_NAME=${IMAGE_NAME}
 PORT="${2:-3000}"
 
-# Default environment variables (can be overridden)
-# DATABASE_HOST="${DATABASE_HOST}"
-# DATABASE_PORT="${DATABASE_PORT}"
-# DATABASE_USER="${DATABASE_USER}"
-# DATABASE_PASSWORD="${DATABASE_PASSWORD}"
-# DATABASE_NAME="${DATABASE_NAME}"
-# JWT_SECRET="${JWT_SECRET}"
-# JWT_EXPIRES_IN="${JWT_EXPIRES_IN}"
-# NODE_ENV="${NODE_ENV}"
-
-DATABASE_HOST="aserputko-database-1.c43060suq64k.us-east-1.rds.amazonaws.com"
-DATABASE_PORT="5432"
-DATABASE_USER="postgres"
-DATABASE_PASSWORD="Aprel1988!"
-DATABASE_NAME="postgres"
-JWT_SECRET="your-super-secret-jwt-key-here"
-JWT_EXPIRES_IN="24h"
-NODE_ENV="production"
+# Override IMAGE_TAG with command line argument if provided
+IMAGE_TAG="${1:-$IMAGE_TAG}"
 
 echo "🚀 Running Todo List API Container..."
 echo "Image: ${IMAGE_ORGANIZATION}/${IMAGE_NAME}:${IMAGE_TAG}"

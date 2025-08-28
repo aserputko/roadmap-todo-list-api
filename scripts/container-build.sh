@@ -5,10 +5,18 @@
 
 set -e  # Exit on any error
 
-# Configuration
-IMAGE_ORGANIZATION="aserputko"
-IMAGE_NAME="roadmap-todo-list-api"
-IMAGE_TAG="${1:-latest}"
+# Source environment variables
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ -f "$SCRIPT_DIR/../.env" ]]; then
+    source "$SCRIPT_DIR/../.env"
+else
+    echo "❌ Error: docker.env file not found!"
+    echo "Please create docker.env file based on docker.env.example"
+    exit 1
+fi
+
+# Override IMAGE_TAG with command line argument if provided
+IMAGE_TAG="${1:-$IMAGE_TAG}"
 
 # Dynamically determine Dockerfile path based on current directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

@@ -32,6 +32,41 @@
 $ npm install
 ```
 
+## Docker Setup
+
+### Environment Configuration
+
+1. Copy the example environment file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Edit `.env` with your configuration:
+   - `IMAGE_ORGANIZATION`: Your Docker Hub username
+   - `IMAGE_NAME`: Your application name
+   - `IMAGE_TAG`: Default image tag
+   - Database and JWT configuration
+
+### Docker Commands
+
+```bash
+# Build the Docker image
+./scripts/container-build.sh [tag]
+
+# Run the container
+./scripts/container-run.sh [tag] [port]
+
+# Publish to Docker Hub
+./scripts/container-publish.sh [tag]
+```
+
+**Note**: Make sure you're logged in to Docker Hub before publishing:
+
+```bash
+docker login
+```
+
 ## Compile and run the project
 
 ```bash
