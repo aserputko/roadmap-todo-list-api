@@ -5,14 +5,25 @@
 
 set -e  # Exit on any error
 
-# Source environment variables
+# Source environment variables if .env file exists
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [[ -f "$SCRIPT_DIR/../.env" ]]; then
     source "$SCRIPT_DIR/../.env"
 else
-    echo "❌ Error: docker.env file not found!"
-    echo "Please create docker.env file based on docker.env.example"
-    exit 1
+    echo "⚠️  Warning: .env file not found, using default values"
+    # Set default values
+    IMAGE_ORGANIZATION="${IMAGE_ORGANIZATION}"
+    IMAGE_NAME="${IMAGE_NAME}"
+    IMAGE_TAG="${IMAGE_TAG}"
+    
+    # Check if required environment variables are set
+    if [[ -z "${DATABASE_HOST}" || -z "${DATABASE_PASSWORD}" || -z "${JWT_SECRET}" ]]; then
+        echo "❌ Error: Required environment variables not set!"
+        echo "Please create a .env file with the following variables:"
+        echo "   DATABASE_HOST, DATABASE_PASSWORD, JWT_SECRET"
+        echo "Or set them in your shell environment"
+        exit 1
+    fi
 fi
 
 # Configuration

@@ -5,21 +5,22 @@
 
 set -e  # Exit on any error
 
-# Source environment variables
+# Source environment variables if .env file exists
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [[ -f "$SCRIPT_DIR/../.env" ]]; then
     source "$SCRIPT_DIR/../.env"
 else
-    echo "❌ Error: docker.env file not found!"
-    echo "Please create docker.env file based on docker.env.example"
-    exit 1
+    echo "⚠️  Warning: .env file not found, using default values"
+    # Set default values
+    IMAGE_ORGANIZATION="${IMAGE_ORGANIZATION}"
+    IMAGE_NAME="${IMAGE_NAME}"
+    IMAGE_TAG="${IMAGE_TAG}"
 fi
 
 # Override IMAGE_TAG with command line argument if provided
 IMAGE_TAG="${1:-$IMAGE_TAG}"
 
 # Dynamically determine Dockerfile path based on current directory
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [[ "$PWD" == "$SCRIPT_DIR" ]]; then
     # Running from scripts folder
     DOCKERFILE_PATH="../Dockerfile"
@@ -33,6 +34,7 @@ fi
 echo "🐳 Building Todo List API Docker Image..."
 echo "Image: ${IMAGE_ORGANIZATION}/${IMAGE_NAME}:${IMAGE_TAG}"
 echo "Dockerfile: ${DOCKERFILE_PATH}"
+echo "Target Platform: linux/amd64 (for AWS EC2 compatibility)"
 echo ""
 
 # Check if Dockerfile exists
@@ -42,9 +44,10 @@ if [ ! -f "$DOCKERFILE_PATH" ]; then
     exit 1
 fi
 
-# Build the Docker image
-echo "🔨 Building image..."
+# Build the Docker image with platform specification
+echo "🔨 Building image for linux/amd64 platform..."
 docker build \
+    --platform linux/amd64 \
     -f "$DOCKERFILE_PATH" \
     -t "${IMAGE_ORGANIZATION}/${IMAGE_NAME}:${IMAGE_TAG}" \
     -t "${IMAGE_ORGANIZATION}/${IMAGE_NAME}:latest" \
@@ -54,6 +57,7 @@ docker build \
 if [ $? -eq 0 ]; then
     echo ""
     echo "✅ Successfully built ${IMAGE_ORGANIZATION}/${IMAGE_NAME}:${IMAGE_TAG}"
+    echo "✅ Image is compatible with linux/amd64 (AWS EC2 x86_64 instances)"
     echo ""
 else
     echo "❌ Build failed!"

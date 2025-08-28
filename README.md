@@ -34,12 +34,26 @@ $ npm install
 
 ## Docker Setup
 
+### Architecture Compatibility (AWS EC2)
+
+**Important**: If you're deploying to AWS EC2 instances, the Docker image must be built for the `linux/amd64` platform. The build script automatically handles this.
+
+**Common Issue**: If you see the error `no matching manifest for linux/amd64 in the manifest list entries`, it means the image was built for a different architecture (e.g., ARM64 on M1/M2 Macs).
+
+**Solution**: Use the provided build script which automatically sets the correct platform:
+
+```bash
+./scripts/container-build.sh
+```
+
+The script includes `--platform linux/amd64` flag to ensure AWS EC2 compatibility.
+
 ### Environment Configuration
 
 1. Copy the example environment file:
 
    ```bash
-   cp .env.example .env
+   cp env.example .env
    ```
 
 2. Edit `.env` with your configuration:
@@ -51,7 +65,7 @@ $ npm install
 ### Docker Commands
 
 ```bash
-# Build the Docker image
+# Build the Docker image (automatically targets linux/amd64 for AWS EC2)
 ./scripts/container-build.sh [tag]
 
 # Run the container

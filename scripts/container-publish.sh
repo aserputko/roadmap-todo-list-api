@@ -5,14 +5,16 @@
 
 set -e  # Exit on any error
 
-# Source environment variables
+# Source environment variables if .env file exists
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [[ -f "$SCRIPT_DIR/../.env" ]]; then
     source "$SCRIPT_DIR/../.env"
 else
-    echo "❌ Error: docker.env file not found!"
-    echo "Please create docker.env file based on docker.env.example"
-    exit 1
+    echo "⚠️  Warning: .env file not found, using default values"
+    # Set default values
+    IMAGE_ORGANIZATION="${IMAGE_ORGANIZATION}"
+    IMAGE_NAME="${IMAGE_NAME}"
+    IMAGE_TAG="${IMAGE_TAG}"
 fi
 
 # Override IMAGE_TAG with command line argument if provided
